@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THULZ SKIN THERAPY</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{box-sizing:border-box}
+
+body{
+font-family:'Poppins',sans-serif;
+margin:0;
+background:#fafafa;
+}
+
+header{
+background:#f4c7d0;
+padding:15px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+}
+
+.logo{
+font-weight:600;
+font-size:20px;
+}
+
+.search{
+padding:10px;
+border-radius:25px;
+border:1px solid #ddd;
+width:220px;
+}
+
+.cart{
+cursor:pointer;
+font-weight:500;
+}
+
+.hero{
+background:url("full kit(STRETCH MARK).jpeg") center/cover;
+height:380px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.hero button{
+padding:14px 40px;
+border:none;
+background:white;
+font-weight:600;
+cursor:pointer;
+border-radius:30px;
+}
+
+.collections{
+padding:40px;
+background:#d9eef0;
+}
+
+.collections h2{
+margin-bottom:20px;
+}
+
+.collection-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:20px;
+}
+
+.collection{
+background:white;
+border-radius:8px;
+overflow:hidden;
+cursor:pointer;
+transition:.3s;
+}
+
+.collection:hover{transform:scale(1.03)}
+
+.collection img{
+width:100%;
+height:150px;
+object-fit:cover;
+}
+
+.collection p{
+padding:12px;
+font-weight:500;
+}
+
+.products{
+padding:40px;
+}
+
+.product-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+}
+
+.product{
+background:white;
+padding:15px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.08);
+text-align:center;
+}
+
+.product img{
+width:100%;
+height:180px;
+object-fit:cover;
+border-radius:8px;
+}
+
+.price{
+font-weight:600;
+margin:8px 0;
+color:#000;
+}
+
+.btn{
+padding:10px;
+border:none;
+cursor:pointer;
+width:100%;
+border-radius:20px;
+margin-top:6px;
+}
+
+.cartBtn{background:black;color:white}
+.buyBtn{background:#f4c7d0}
+
+.cart-panel{
+position:fixed;
+right:0;
+top:0;
+width:320px;
+height:100%;
+background:white;
+box-shadow:-3px 0 10px rgba(0,0,0,0.1);
+padding:20px;
+display:none;
+overflow:auto;
+z-index:1000;
+}
+
+.checkout input{
+width:100%;
+padding:10px;
+margin:6px 0;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:15px 18px;
+border-radius:50%;
+font-size:20px;
+text-decoration:none;
+z-index:99;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+.whatsapp:hover{
+transform:scale(1.1);
+transition:0.3s;
+}
+
+footer{
+text-align:center;
+padding:30px 20px;
+background:#f4c7d0;
+margin-top:40px;
+}
+
+.delivery-note{
+font-weight:600;
+font-size:1.2rem;
+margin:15px 0 8px;
+color:#2c3e50;
+}
+
+.footer-links a{
+margin:0 12px;
+color:#000;
+text-decoration:none;
+font-weight:500;
+}
+
+.copyright{
+margin-top:20px;
+font-size:0.9rem;
+}
+
+@media(max-width:600px){
+.search{width:100%;margin-top:10px}
+header{flex-direction:column;gap:10px}
+}
+
+/* small toast / feedback */
+.toast-msg{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:#333;
+color:white;
+padding:10px 24px;
+border-radius:40px;
+font-size:14px;
+z-index:2000;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+opacity:0;
+transition:opacity 0.2s;
+pointer-events:none;
+}
+.toast-msg.show{opacity:1;}
+</style>
+</head>
+
+<body>
+<!-- simple toast for add to cart feedback -->
+<div id="toast" class="toast-msg">✓ Item added to cart</div>
+
+<header>
+<div class="logo">THULZ SKIN THERAPY</div>
+<input class="search" id="search" placeholder="Search products" onkeyup="searchProducts()">
+<div class="cart" onclick="openCart()">🛒 Cart (<span id="count">0</span>)</div>
+</header>
+
+<div class="hero">
+<button onclick="location.href='#all-products'">Shop All</button>
+</div>
+
+<section class="collections">
+<h2>Shop by Collections</h2>
+<div class="collection-grid">
+<div class="collection" onclick="filterProducts('stretch')">
+<img src="full kit(STRETCH MARK).jpeg">
+<p>Stretch Marks →</p>
+</div>
+<div class="collection" onclick="filterProducts('thighs')">
+<img src="Dark inner thigh.jpeg">
+<p>Dark Inner Thighs →</p>
+</div>
+<div class="collection" onclick="filterProducts('spots')">
+<img src="Dark spot full kit.jpeg">
+<p>Dark Spots →</p>
+</div>
+<div class="collection" onclick="filterProducts('glow')">
+<img src="Glowing combo r800.jpeg">
+<p>Glowing Skin →</p>
+</div>
+<div class="collection" onclick="filterProducts('light')">
+<img src="Lightening combo full kit.jpeg">
+<p>Skin Lightening →</p>
+</div>
+</div>
+</section>
+
+<section id="all-products" class="products">
+<h2>All Products</h2>
+<div class="product-grid" id="productGrid">
+
+<!-- STRETCH MARKS PRODUCTS -->
+<div class="product" data-category="stretch">
+<img src="full kit(STRETCH MARK).jpeg">
+<h4>Stretch Marks Full Kit</h4>
+<p class="price">R750</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Marks Full Kit', 750)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="stretch">
+<img src="R650 Stretch mark.jpeg">
+<h4>Stretch Kit 2</h4>
+<p class="price">R650</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Kit 2', 650)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="stretch">
+<img src="R550 Stretch mark.jpeg">
+<h4>Stretch Kit 3</h4>
+<p class="price">R550</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Kit 3', 550)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="stretch">
+<img src="R350 Stretch mark.jpeg">
+<h4>Stretch Kit 4</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Kit 4', 350)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="stretch">
+<img src="r350 stretchy.jpeg">
+<h4>Stretch Kit 5</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Kit 5', 350)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="stretch">
+<img src="R200 Stretch mark.jpeg">
+<h4>Stretch Kit 6</h4>
+<p class="price">R200</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Kit 6', 200)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="stretch">
+<img src="R150 Stretch mark.jpeg">
+<h4>Stretch Kit 7</h4>
+<p class="price">R150</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Kit 7', 150)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="stretch">
+<img src="r100 stretch mark.jpeg">
+<h4>Stretch Kit 8</h4>
+<p class="price">R100</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Kit 8', 100)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<!-- DARK INNER THIGHS PRODUCTS -->
+<div class="product" data-category="thighs">
+<img src="Dark inner thigh.jpeg">
+<h4>Inner Thigh Full Kit</h4>
+<p class="price">R650</p>
+<button class="btn cartBtn" onclick="addToCart('Inner Thigh Full Kit', 650)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="thighs">
+<img src="R550 Dark inner thigh.jpeg">
+<h4>Inner Thigh Kit 2</h4>
+<p class="price">R550</p>
+<button class="btn cartBtn" onclick="addToCart('Inner Thigh Kit 2', 550)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="thighs">
+<img src="R350 Dark inner thigh.jpeg">
+<h4>Inner Thigh Kit 3</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Inner Thigh Kit 3', 350)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="thighs">
+<img src="r350 inner thigh.jpeg">
+<h4>Inner Thigh Kit 4</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Inner Thigh Kit 4', 350)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="thighs">
+<img src="R400 Darker inner thigh.jpeg">
+<h4>Inner Thigh Kit 5</h4>
+<p class="price">R400</p>
+<button class="btn cartBtn" onclick="addToCart('Inner Thigh Kit 5', 400)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="thighs">
+<img src="R200 dark inner thigh.jpeg">
+<h4>Inner Thigh Kit 6</h4>
+<p class="price">R200</p>
+<button class="btn cartBtn" onclick="addToCart('Inner Thigh Kit 6', 200)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<!-- DARK SPOTS PRODUCTS -->
+<div class="product" data-category="spots">
+<img src="Dark spot full kit.jpeg">
+<h4>Dark Spots Full Kit</h4>
+<p class="price">R700</p>
+<button class="btn cartBtn" onclick="addToCart('Dark Spots Full Kit', 700)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="spots">
+<img src="R600 dark spot.jpeg">
+<h4>Dark Spots Kit 2</h4>
+<p class="price">R600</p>
+<button class="btn cartBtn" onclick="addToCart('Dark Spots Kit 2', 600)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="spots">
+<img src="R550 dark spot.jpeg">
+<h4>Dark Spots Kit 3</h4>
+<p class="price">R550</p>
+<button class="btn cartBtn" onclick="addToCart('Dark Spots Kit 3', 550)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="spots">
+<img src="R350 dark spot.jpeg">
+<h4>Dark Spots Kit 4</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Dark Spots Kit 4', 350)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="spots">
+<img src="R200 dark spot.jpeg">
+<h4>Dark Spots Kit 5</h4>
+<p class="price">R200</p>
+<button class="btn cartBtn" onclick="addToCart('Dark Spots Kit 5', 200)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="spots">
+<img src="R120 dark spot.jpeg">
+<h4>Dark Spots Kit 6</h4>
+<p class="price">R120</p>
+<button class="btn cartBtn" onclick="addToCart('Dark Spots Kit 6', 120)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<!-- GLOWING SKIN PRODUCTS -->
+<div class="product" data-category="glow">
+<img src="Glowing combo r800.jpeg">
+<h4>Glow Full Kit</h4>
+<p class="price">R800</p>
+<button class="btn cartBtn" onclick="addToCart('Glow Full Kit', 800)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="glow">
+<img src="R600 glowing combo.jpeg">
+<h4>Glow Kit 2</h4>
+<p class="price">R600</p>
+<button class="btn cartBtn" onclick="addToCart('Glow Kit 2', 600)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="glow">
+<img src="R350 glowing combo.jpeg">
+<h4>Glow Kit 3</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Glow Kit 3', 350)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="glow">
+<img src="r250 glowing combo.jpeg">
+<h4>Glow Kit 4</h4>
+<p class="price">R250</p>
+<button class="btn cartBtn" onclick="addToCart('Glow Kit 4', 250)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="glow">
+<img src="r200 glowing combo.jpeg">
+<h4>Glow Kit 5</h4>
+<p class="price">R200</p>
+<button class="btn cartBtn" onclick="addToCart('Glow Kit 5', 200)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="glow">
+<img src="r100 glowing combo.jpeg">
+<h4>Glow Kit 6</h4>
+<p class="price">R100</p>
+<button class="btn cartBtn" onclick="addToCart('Glow Kit 6', 100)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<!-- SKIN LIGHTENING PRODUCTS -->
+<div class="product" data-category="light">
+<img src="Lightening combo full kit.jpeg">
+<h4> Lightening Combo</h4>
+<p class="price">R950</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Combo', 950)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="light">
+<img src="r820 lightening combo.jpeg">
+<h4>Lightening Kit 2</h4>
+<p class="price">R820</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Kit 2', 820)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="light">
+<img src="r730 lightening combo.jpeg">
+<h4>Lightening Kit 3</h4>
+<p class="price">R730</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Kit 3', 730)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="light">
+<img src="r650 lightenig combo.jpeg">
+<h4>Lightening Kit 4</h4>
+<p class="price">R650</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Kit 4', 650)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="light">
+<img src="r350 lightening combo.jpeg">
+<h4>Lightening Kit 5</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Kit 5', 350)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="light">
+<img src="r280 lightening face combo.jpeg">
+<h4>Lightening Kit 6</h4>
+<p class="price">R280</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Kit 6', 280)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="light">
+<img src="r150 lihtening combo.jpeg">
+<h4>Lightening Kit 7</h4>
+<p class="price">R150</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Kit 7', 150)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="light">
+<img src="R200 lightening combo.jpeg">
+<h4>Lightening Kit 8</h4>
+<p class="price">R200</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Kit 8', 200)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+<div class="product" data-category="light">
+<img src="oil lightening combo R150.jpeg">
+<h4>Lightening Kit 9</h4>
+<p class="price">R150</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Kit 9', 150)">Add to Cart</button>
+<button class="btn buyBtn">Buy Now</button>
+</div>
+
+</div>
+</section>
+
+<div class="cart-panel" id="cartPanel">
+<h2>Your Cart</h2>
+<div id="cartItems"></div>
+<h3>Checkout</h3>
+<div class="checkout">
+<input placeholder="Full Name" id="checkoutName">
+<input placeholder="Address" id="checkoutAddress">
+<input placeholder="City" id="checkoutCity">
+<input placeholder="Phone" id="checkoutPhone">
+<!-- total display -->
+<p style="font-weight:bold; margin:10px 0 5px;">Total: R<span id="cartTotal">0.00</span></p>
+<!-- PayPal button container will be re-rendered dynamically (shown below) -->
+<div id="paypal-button-container"></div>
+</div>
+</div>
+
+<!-- WHATSAPP BUTTON WITH YOUR NUMBER -->
+<a class="whatsapp" href="https://wa.me/27774998791" target="_blank">💬</a>
+
+<footer>
+<div class="footer-links">
+<a href="https://www.facebook.com/share/1CS8nUa3Kd/?mibextid=wwXIfr">Facebook</a> |
+<a href="https://www.tiktok.com/@makungothulani?_r=1&_t=ZS-94beufinCuz">TikTok</a>
+</div>
+<div class="delivery-note">📦 WE DELIVER NATIONWIDE</div>
+<div class="copyright">© THULZ SKIN THERAPY · all rights reserved</div>
+</footer>
+
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=ZAR"></script>
+
+<script>
+let cart = [];
+let count = 0;
+
+function openCart() {
+document.getElementById("cartPanel").style.display = "block";
+// Update total when opening
+updateCartTotalDisplay();
+}
+
+function showAddToast() {
+const toast = document.getElementById('toast');
+toast.classList.add('show');
+setTimeout(() => toast.classList.remove('show'), 1500);
+}
+
+function addToCart(name, price) {
+cart.push({name, price});
+count++;
+document.getElementById("count").innerText = count;
+
+// add item visually in cart panel
+let cartItemsDiv = document.getElementById("cartItems");
+let item = document.createElement("p");
+item.innerText = name + " - R" + price;
+cartItemsDiv.appendChild(item);
+
+// show toast notification
+showAddToast();
+
+// update total preview inside cart panel
+updateCartTotalDisplay();
+}
+
+// helper to compute total and show inside cart panel
+function updateCartTotalDisplay() {
+const totalSpan = document.getElementById('cartTotal');
+if(totalSpan) {
+let total = cart.reduce((acc, item) => acc + item.price, 0);
+totalSpan.innerText = total.toFixed(2);
+}
+// also we need to re-render paypal with updated amount, but paypal.Buttons must be recreated.
+// for simplicity we destroy old container and render new with current total.
+renderPayPalButton();
+}
+
+function renderPayPalButton() {
+let container = document.getElementById('paypal-button-container');
+// clear container
+container.innerHTML = '';
+
+// calculate total from cart
+let total = cart.reduce((acc, item) => acc + item.price, 0);
+if (total === 0) {
+// if cart empty, maybe disable paypal? we'll show placeholder
+container.innerHTML = '<p style="color:gray;font-size:0.9rem;">Add items to checkout</p>';
+return;
+}
+
+// Re-render paypal buttons with total
+if (typeof paypal !== 'undefined') {
+paypal.Buttons({
+createOrder: function(data, actions) {
+return actions.order.create({
+purchase_units: [{
+amount: {
+value: total.toFixed(2)  // e.g. 750.00
+}
+}]
+});
+},
+onApprove: function(data, actions) {
+return actions.order.capture().then(function(details) {
+alert('Payment successful! Thank you, ' + details.payer.name.given_name);
+// optionally clear cart, but we keep as is
+});
+}
+}).render('#paypal-button-container');
+} else {
+console.log('PayPal SDK not loaded yet');
+}
+}
+
+function filterProducts(category) {
+let products = document.querySelectorAll('.product');
+products.forEach(product => {
+if (category === 'all' || product.dataset.category === category) {
+product.style.display = 'block';
+} else {
+product.style.display = 'none';
+}
+});
+document.getElementById('all-products').scrollIntoView({behavior: "smooth"});
+}
+
+function searchProducts() {
+let input = document.getElementById("search").value.toLowerCase();
+let cards = document.querySelectorAll(".product");
+cards.forEach(card => {
+let name = card.querySelector('h4').innerText.toLowerCase();
+if (name.includes(input)) {
+card.style.display = "block";
+} else {
+card.style.display = "none";
+}
+});
+}
+
+// Show all products by default
+filterProducts('all');
+
+// Close cart when clicking outside
+window.onclick = function(e) {
+const panel = document.getElementById("cartPanel");
+if (!panel.contains(e.target) && !e.target.classList.contains('cart')) {
+panel.style.display = "none";
+}
+};
+
+// Also re-render paypal if cart panel opened and total >0 (done inside openCart already)
+// But we also want paypal to be ready when page loads if cart has items? cart empty initially.
+// we call renderPayPalButton on cart update.
+
+// After any cart update (addToCart) we call updateCartTotalDisplay which triggers render.
+// also manually call when cart panel opened.
+window.addEventListener('load', function() {
+// initial render (cart empty so shows placeholder)
+renderPayPalButton();
+});
+
+// for "Buy Now" buttons we can also add to cart? but you didn't ask to change functionality.
+// keep as original: they just look, but if you want them to add to cart we would modify.
+// But instruction: don't change anything, just add cart feedback and paypal debit/credit.
+// So Buy Now does nothing extra.
+// additionally, ensure that cart panel shows fields and paypal button.
+</script>
+
+</body>
+</html>
