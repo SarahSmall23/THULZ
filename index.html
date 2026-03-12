@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THULZ SKIN THERAPY · Payment & Products</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+body{
+font-family:'Poppins',sans-serif;
+margin:0;
+background:#fafafa;
+}
+header{
+background:#f4c7d0;
+padding:15px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+}
+.logo{
+font-weight:600;
+font-size:20px;
+}
+.search{
+padding:10px;
+border-radius:25px;
+border:1px solid #ddd;
+width:220px;
+}
+.cart{
+cursor:pointer;
+font-weight:500;
+}
+.hero{
+background:url("full kit(STRETCH MARK).jpeg") center/cover;
+height:380px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+.hero button{
+padding:14px 40px;
+border:none;
+background:white;
+font-weight:600;
+cursor:pointer;
+border-radius:30px;
+}
+.collections{
+padding:40px;
+background:#d9eef0;
+}
+.collections h2{
+margin-bottom:20px;
+}
+.collection-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:20px;
+}
+.collection{
+background:white;
+border-radius:8px;
+overflow:hidden;
+cursor:pointer;
+transition:.3s;
+}
+.collection:hover{transform:scale(1.03)}
+.collection img{
+width:100%;
+height:150px;
+object-fit:cover;
+}
+.collection p{
+padding:12px;
+font-weight:500;
+}
+.products{
+padding:40px;
+}
+.product-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+}
+.product{
+background:white;
+padding:15px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.08);
+text-align:center;
+}
+.product img{
+width:100%;
+height:180px;
+object-fit:cover;
+border-radius:8px;
+}
+.price{
+font-weight:600;
+margin:8px 0;
+color:#000;
+}
+.btn{
+padding:10px;
+border:none;
+cursor:pointer;
+width:100%;
+border-radius:20px;
+margin-top:6px;
+}
+.cartBtn{background:black;color:white}
+.buyBtn{background:#f4c7d0; color:#000; font-weight:500;}
+.cart-panel{
+position:fixed;
+right:0;
+top:0;
+width:340px;
+height:100%;
+background:white;
+box-shadow:-3px 0 10px rgba(0,0,0,0.1);
+padding:20px;
+display:none;
+overflow:auto;
+z-index:1000;
+}
+.checkout input{
+width:100%;
+padding:10px;
+margin:6px 0;
+border:1px solid #ddd;
+border-radius:6px;
+font-size:0.9rem;
+}
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:15px 18px;
+border-radius:50%;
+font-size:20px;
+text-decoration:none;
+z-index:99;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+.whatsapp:hover{
+transform:scale(1.1);
+transition:0.3s;
+}
+footer{
+text-align:center;
+padding:30px 20px;
+background:#f4c7d0;
+margin-top:40px;
+}
+.delivery-note{
+font-weight:600;
+font-size:1.2rem;
+margin:15px 0 8px;
+color:#2c3e50;
+}
+.footer-links a{
+margin:0 12px;
+color:#000;
+text-decoration:none;
+font-weight:500;
+}
+.copyright{
+margin-top:20px;
+font-size:0.9rem;
+}
+@media(max-width:600px){
+.search{width:100%;margin-top:10px}
+header{flex-direction:column;gap:10px}
+}
+.toast-msg{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:#333;
+color:white;
+padding:10px 24px;
+border-radius:40px;
+font-size:14px;
+z-index:2000;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+opacity:0;
+transition:opacity 0.2s;
+pointer-events:none;
+}
+.toast-msg.show{opacity:1;}
+/* payment info pink box */
+.payment-info{
+background:#fce4ec;
+border-left:5px solid #f4c7d0;
+padding:15px;
+border-radius:12px;
+margin:20px 0 10px;
+font-size:0.9rem;
+}
+.payment-info p{
+margin:8px 0;
+}
+.payment-info .bank-detail{
+background:white;
+padding:10px;
+border-radius:8px;
+font-family:monospace;
+font-weight:600;
+margin:10px 0;
+border:1px dashed #f4c7d0;
+}
+/* checkout button pink */
+.checkout-wa-btn{
+background:#f4c7d0;
+color:#000;
+border:none;
+border-radius:30px;
+padding:12px;
+font-weight:600;
+width:100%;
+margin-top:10px;
+cursor:pointer;
+font-size:0.95rem;
+}
+.checkout-wa-btn:hover{
+background:#e5a9b6;
+}
+#cartTotal, .checkout p {
+font-size:0.95rem;
+}
+</style>
+</head>
+<body>
+<!-- toast for feedback -->
+<div id="toast" class="toast-msg">✓ Item added to cart</div>
+
+<header>
+<div class="logo">THULZ SKIN THERAPY</div>
+<input class="search" id="search" placeholder="Search products" onkeyup="searchProducts()">
+<div class="cart" onclick="openCart()">🛒 Cart (<span id="count">0</span>)</div>
+</header>
+
+<div class="hero">
+<button onclick="location.href='#all-products'">Shop All</button>
+</div>
+
+<section class="collections">
+<h2>Shop by Collections</h2>
+<div class="collection-grid">
+<div class="collection" onclick="filterProducts('stretch')">
+<img src="full kit(STRETCH MARK).jpeg" alt="stretch">
+<p>Stretch Marks →</p>
+</div>
+<div class="collection" onclick="filterProducts('thighs')">
+<img src="Dark inner thigh.jpeg" alt="thighs">
+<p>Dark Inner Thighs →</p>
+</div>
+<div class="collection" onclick="filterProducts('spots')">
+<img src="Dark spot full kit.jpeg" alt="spots">
+<p>Dark Spots →</p>
+</div>
+<div class="collection" onclick="filterProducts('glow')">
+<img src="Glowing combo r800.jpeg" alt="glow">
+<p>Glowing Skin →</p>
+</div>
+<div class="collection" onclick="filterProducts('light')">
+<img src="Lightening combo full kit.jpeg" alt="light">
+<p>Skin Lightening →</p>
+</div>
+</div>
+</section>
+
+
+</section>
+
+<section id="all-products" class="products">
+<h2>All Products</h2>
+<div class="product-grid" id="productGrid">
+
+<!-- STRETCH MARKS PRODUCTS (renamed) -->
+<div class="product" data-category="stretch">
+<img src="full kit(STRETCH MARK).jpeg" alt="stretch">
+<h4>Stretch Marks Full Kit</h4>
+<p class="price">R750</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Marks Full Kit', 750)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Stretch Marks Full Kit', 750)">Buy Now</button>
+</div>
+<div class="product" data-category="stretch">
+<img src="R650 Stretch mark.jpeg" alt="stretch2">
+<h4>StretchMark Effective Combo</h4>
+<p class="price">R650</p>
+<button class="btn cartBtn" onclick="addToCart('StretchMark Effective Combo', 650)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('StretchMark Effective Combo', 650)">Buy Now</button>
+</div>
+<div class="product" data-category="stretch">
+<img src="R550 Stretch mark.jpeg" alt="stretch3">
+<h4>Stretch Combo Pro</h4>
+<p class="price">R550</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Combo Pro', 550)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Stretch Combo Pro', 550)">Buy Now</button>
+</div>
+<div class="product" data-category="stretch">
+<img src="R350 Stretch mark.jpeg" alt="stretch4">
+<h4>Intensive Stretch Therapy</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Intensive Stretch Therapy', 350)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Intensive Stretch Therapy', 350)">Buy Now</button>
+</div>
+<div class="product" data-category="stretch">
+<img src="r350 stretchy.jpeg" alt="stretch5">
+<h4>Stretch Smooth Duo</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Smooth Duo', 350)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Stretch Smooth Duo', 350)">Buy Now</button>
+</div>
+<div class="product" data-category="stretch">
+<img src="R200 Stretch mark.jpeg" alt="stretch6">
+<h4>Stretch Mark Control</h4>
+<p class="price">R200</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Mark Control', 200)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Stretch Mark Control', 200)">Buy Now</button>
+</div>
+<div class="product" data-category="stretch">
+<img src="R150 Stretch mark.jpeg" alt="stretch7">
+<h4>Stretch Repair Lotion</h4>
+<p class="price">R150</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Repair Lotion', 150)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Stretch Repair Lotion', 150)">Buy Now</button>
+</div>
+<div class="product" data-category="stretch">
+<img src="r100 stretch mark.jpeg" alt="stretch8">
+<h4>Stretch Mark Minimizer</h4>
+<p class="price">R100</p>
+<button class="btn cartBtn" onclick="addToCart('Stretch Mark Minimizer', 100)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Stretch Mark Minimizer', 100)">Buy Now</button>
+</div>
+
+<!-- DARK INNER THIGHS (renamed) -->
+<div class="product" data-category="thighs">
+<img src="Dark inner thigh.jpeg" alt="thigh">
+<h4>Inner Thigh Full Kit</h4>
+<p class="price">R650</p>
+<button class="btn cartBtn" onclick="addToCart('Inner Thigh Full Kit', 650)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Inner Thigh Full Kit', 650)">Buy Now</button>
+</div>
+<div class="product" data-category="thighs">
+<img src="R550 Dark inner thigh.jpeg" alt="thigh2">
+<h4>Dark Thigh Brightener</h4>
+<p class="price">R550</p>
+<button class="btn cartBtn" onclick="addToCart('Dark Thigh Brightener', 550)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Dark Thigh Brightener', 550)">Buy Now</button>
+</div>
+<div class="product" data-category="thighs">
+<img src="R350 Dark inner thigh.jpeg" alt="thigh3">
+<h4>Inner Thigh Even Tone</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Inner Thigh Even Tone', 350)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Inner Thigh Even Tone', 350)">Buy Now</button>
+</div>
+<div class="product" data-category="thighs">
+<img src="r350 inner thigh.jpeg" alt="thigh4">
+<h4>Thigh Lightening Pro</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Thigh Lightening Pro', 350)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Thigh Lightening Pro', 350)">Buy Now</button>
+</div>
+<div class="product" data-category="thighs">
+<img src="R400 Darker inner thigh.jpeg" alt="thigh5">
+<h4>Intensive Inner Thigh</h4>
+<p class="price">R400</p>
+<button class="btn cartBtn" onclick="addToCart('Intensive Inner Thigh', 400)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Intensive Inner Thigh', 400)">Buy Now</button>
+</div>
+<div class="product" data-category="thighs">
+<img src="R200 dark inner thigh.jpeg" alt="thigh6">
+<h4>Thigh Bright Duo</h4>
+<p class="price">R200</p>
+<button class="btn cartBtn" onclick="addToCart('Thigh Bright Duo', 200)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Thigh Bright Duo', 200)">Buy Now</button>
+</div>
+
+<!-- DARK SPOTS (renamed) -->
+<div class="product" data-category="spots">
+<img src="Dark spot full kit.jpeg" alt="spots">
+<h4>Dark Spots Full Kit</h4>
+<p class="price">R700</p>
+<button class="btn cartBtn" onclick="addToCart('Dark Spots Full Kit', 700)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Dark Spots Full Kit', 700)">Buy Now</button>
+</div>
+<div class="product" data-category="spots">
+<img src="R600 dark spot.jpeg" alt="spots2">
+<h4>Dark Spot Eraser Pro</h4>
+<p class="price">R600</p>
+<button class="btn cartBtn" onclick="addToCart('Dark Spot Eraser Pro', 600)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Dark Spot Eraser Pro', 600)">Buy Now</button>
+</div>
+<div class="product" data-category="spots">
+<img src="R550 dark spot.jpeg" alt="spots3">
+<h4>Even Tone Dark Spot</h4>
+<p class="price">R550</p>
+<button class="btn cartBtn" onclick="addToCart('Even Tone Dark Spot', 550)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Even Tone Dark Spot', 550)">Buy Now</button>
+</div>
+<div class="product" data-category="spots">
+<img src="R350 dark spot.jpeg" alt="spots4">
+<h4>Dark Spot Clarifying</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Dark Spot Clarifying', 350)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Dark Spot Clarifying', 350)">Buy Now</button>
+</div>
+<div class="product" data-category="spots">
+<img src="R200 dark spot.jpeg" alt="spots5">
+<h4>Spots Fading Complex</h4>
+<p class="price">R200</p>
+<button class="btn cartBtn" onclick="addToCart('Spots Fading Complex', 200)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Spots Fading Complex', 200)">Buy Now</button>
+</div>
+<div class="product" data-category="spots">
+<img src="R120 dark spot.jpeg" alt="spots6">
+<h4>Dark Spot Touch-Up</h4>
+<p class="price">R120</p>
+<button class="btn cartBtn" onclick="addToCart('Dark Spot Touch-Up', 120)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Dark Spot Touch-Up', 120)">Buy Now</button>
+</div>
+
+<!-- GLOWING SKIN (renamed) -->
+<div class="product" data-category="glow">
+<img src="Glowing combo r800.jpeg" alt="glow">
+<h4>Glow Full Kit</h4>
+<p class="price">R800</p>
+<button class="btn cartBtn" onclick="addToCart('Glow Full Kit', 800)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Glow Full Kit', 800)">Buy Now</button>
+</div>
+<div class="product" data-category="glow">
+<img src="R600 glowing combo.jpeg" alt="glow2">
+<h4>Radiant Glow Pro</h4>
+<p class="price">R600</p>
+<button class="btn cartBtn" onclick="addToCart('Radiant Glow Pro', 600)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Radiant Glow Pro', 600)">Buy Now</button>
+</div>
+<div class="product" data-category="glow">
+<img src="R350 glowing combo.jpeg" alt="glow3">
+<h4>Illuminating Glow</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Illuminating Glow', 350)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Illuminating Glow', 350)">Buy Now</button>
+</div>
+<div class="product" data-category="glow">
+<img src="r250 glowing combo.jpeg" alt="glow4">
+<h4>Glow Booster Duo</h4>
+<p class="price">R250</p>
+<button class="btn cartBtn" onclick="addToCart('Glow Booster Duo', 250)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Glow Booster Duo', 250)">Buy Now</button>
+</div>
+<div class="product" data-category="glow">
+<img src="r200 glowing combo.jpeg" alt="glow5">
+<h4>Vitamin Glow Serum</h4>
+<p class="price">R200</p>
+<button class="btn cartBtn" onclick="addToCart('Vitamin Glow Serum', 200)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Vitamin Glow Serum', 200)">Buy Now</button>
+</div>
+<div class="product" data-category="glow">
+<img src="r100 glowing combo.jpeg" alt="glow6">
+<h4>Daily Glow Drops</h4>
+<p class="price">R100</p>
+<button class="btn cartBtn" onclick="addToCart('Daily Glow Drops', 100)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Daily Glow Drops', 100)">Buy Now</button>
+</div>
+
+<!-- SKIN LIGHTENING (renamed) -->
+<div class="product" data-category="light">
+<img src="Lightening combo full kit.jpeg" alt="light">
+<h4>Lightening Full Kit</h4>
+<p class="price">R950</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Full Kit', 950)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Lightening Full Kit', 950)">Buy Now</button>
+</div>
+<div class="product" data-category="light">
+<img src="r820 lightening combo.jpeg" alt="light2">
+<h4>Lightening Advanced</h4>
+<p class="price">R820</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Advanced', 820)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Lightening Advanced', 820)">Buy Now</button>
+</div>
+<div class="product" data-category="light">
+<img src="r730 lightening combo.jpeg" alt="light3">
+<h4>Bright Complex Pro</h4>
+<p class="price">R730</p>
+<button class="btn cartBtn" onclick="addToCart('Bright Complex Pro', 730)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Bright Complex Pro', 730)">Buy Now</button>
+</div>
+<div class="product" data-category="light">
+<img src="r650 lightenig combo.jpeg" alt="light4">
+<h4>Even Light Duo</h4>
+<p class="price">R650</p>
+<button class="btn cartBtn" onclick="addToCart('Even Light Duo', 650)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Even Light Duo', 650)">Buy Now</button>
+</div>
+<div class="product" data-category="light">
+<img src="r350 lightening combo.jpeg" alt="light5">
+<h4>Lightening Radiance</h4>
+<p class="price">R350</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Radiance', 350)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Lightening Radiance', 350)">Buy Now</button>
+</div>
+<div class="product" data-category="light">
+<img src="r280 lightening face combo.jpeg" alt="light6">
+<h4>Face Lightening Pro</h4>
+<p class="price">R280</p>
+<button class="btn cartBtn" onclick="addToCart('Face Lightening Pro', 280)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Face Lightening Pro', 280)">Buy Now</button>
+</div>
+<div class="product" data-category="light">
+<img src="r150 lihtening combo.jpeg" alt="light7">
+<h4>Gentle Light Cream</h4>
+<p class="price">R150</p>
+<button class="btn cartBtn" onclick="addToCart('Gentle Light Cream', 150)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Gentle Light Cream', 150)">Buy Now</button>
+</div>
+<div class="product" data-category="light">
+<img src="R200 lightening combo.jpeg" alt="light8">
+<h4>Lightening Boost</h4>
+<p class="price">R200</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Boost', 200)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Lightening Boost', 200)">Buy Now</button>
+</div>
+<div class="product" data-category="light">
+<img src="oil lightening combo R150.jpeg" alt="light9">
+<h4>Lightening Oil Therapy</h4>
+<p class="price">R150</p>
+<button class="btn cartBtn" onclick="addToCart('Lightening Oil Therapy', 150)">Add to Cart</button>
+<button class="btn buyBtn" onclick="buyNowWhatsApp('Lightening Oil Therapy', 150)">Buy Now</button>
+</div>
+</div>
+</section>
+
+<div class="cart-panel" id="cartPanel">
+<h2>Your Cart</h2>
+<div id="cartItems"></div>
+
+<!-- PAYMENT INSTRUCTIONS INSIDE CART – updated details -->
+<div class="payment-info" style="margin:15px 0;">
+  <p style="font-weight:bold; margin-top:0;">💳 Payment options:</p>
+  <p><strong>EFT / bank transfer</strong><br>
+  📁 FNB / Capitec<br>
+  👤 <strong>THULZ SKIN THERAPY</strong><br>
+  🔢 <strong>1053 107 455</strong><br>
+  (Ref: your name)</p>
+  <p>📎 After payment send POP to WhatsApp</p>
+  <p><strong>WhatsApp order</strong> – click button below</p>
+</div>
+
+<h3 style="font-size:1.1rem;">Delivery details</h3>
+<div class="checkout">
+<input placeholder="Full Name" id="checkoutName" value="">
+<input placeholder="Paxi Code" id="checkoutPaxiCode" value="">
+<input placeholder="City" id="checkoutCity" value="">
+<input placeholder="Phone (important)" id="checkoutPhone" value="">
+<p style="font-weight:bold; font-size:0.95rem;">Total: R<span id="cartTotal">0.00</span></p>
+<!-- WhatsApp checkout button -->
+<button class="checkout-wa-btn" onclick="checkoutViaWhatsApp()">📲 Send order to WhatsApp</button>
+<div id="paypal-button-container" style="margin-top:12px;"></div>
+</div>
+</div>
+
+<!-- fixed WhatsApp button -->
+<a class="whatsapp" href="https://wa.me/27774998791" target="_blank">💬</a>
+
+<footer>
+<div class="footer-links">
+<a href="https://www.facebook.com/share/1CS8nUa3Kd/?mibextid=wwXIfr">Facebook</a> |
+<a href="https://www.tiktok.com/@makungothulani?_r=1&_t=ZS-94beufinCuz">TikTok</a>
+</div>
+<div class="delivery-note">📦 WE DELIVER NATIONWIDE</div>
+<div class="copyright">© THULZ SKIN THERAPY · all rights reserved</div>
+</footer>
+
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=ZAR"></script>
+
+<script>
+// ------------------ DATA --------------------
+let cart = [];
+let count = 0;
+
+// ------------------ TOAST -------------------
+function showAddToast() {
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1500);
+}
+
+// ------------------ CART FUNCTIONS ----------
+function openCart() {
+  document.getElementById("cartPanel").style.display = "block";
+  updateCartTotalDisplay();
+}
+
+function addToCart(name, price) {
+  cart.push({name, price});
+  count++;
+  document.getElementById("count").innerText = count;
+  let cartItemsDiv = document.getElementById("cartItems");
+  let item = document.createElement("p");
+  item.innerText = name + " - R" + price;
+  cartItemsDiv.appendChild(item);
+  showAddToast();
+  updateCartTotalDisplay();
+}
+
+function updateCartTotalDisplay() {
+  const totalSpan = document.getElementById('cartTotal');
+  if(totalSpan) {
+    let total = cart.reduce((acc, item) => acc + item.price, 0);
+    totalSpan.innerText = total.toFixed(2);
+  }
+  renderPayPalButton();
+}
+
+// ------------------ WHATSAPP "BUY NOW" ----------
+function buyNowWhatsApp(name, price) {
+  let phone = "27774998791";
+  let message = `Hello, I want to order:%0A*${name}* - R${price}%0A%0APlease send payment instructions.`;
+  let url = `https://wa.me/${phone}?text=${message}`;
+  window.open(url, '_blank');
+}
+
+// ------------------ WHATSAPP CHECKOUT ------------
+function checkoutViaWhatsApp() {
+  if (cart.length === 0) {
+    alert("Your cart is empty.");
+    return;
+  }
+
+  let name = document.getElementById('checkoutName').value.trim() || "Not provided";
+  let address = document.getElementById('checkoutAddress').value.trim() || "Not provided";
+  let city = document.getElementById('checkoutCity').value.trim() || "Not provided";
+  let phone = document.getElementById('checkoutPhone').value.trim() || "Not provided";
+
+  let itemsList = "";
+  let total = 0;
+  cart.forEach((item, index) => {
+    itemsList += `${index+1}. ${item.name} - R${item.price}%0A`;
+    total += item.price;
+  });
+
+  let message = `🛒 *NEW ORDER* %0A--------------------------------%0A*Customer details*%0AName: ${name}%0APhone: ${phone}%0AAddress: ${address}, ${city}%0A%0A*Items ordered:*%0A${itemsList}%0ATotal: *R${total}*%0A--------------------------------%0APlease confirm and share payment instructions – EFT details (THULZ SKIN THERAPY, acc 1053107455) or PayPal link.`;
+
+  let waUrl = `https://wa.me/27774998791?text=${message}`;
+  window.open(waUrl, '_blank');
+}
+
+// ------------------ FILTER & SEARCH ---------
+function filterProducts(category) {
+  let products = document.querySelectorAll('.product');
+  products.forEach(product => {
+    if (category === 'all' || product.dataset.category === category) {
+      product.style.display = 'block';
+    } else {
+      product.style.display = 'none';
+    }
+  });
+  document.getElementById('all-products').scrollIntoView({behavior: "smooth"});
+}
+
+function searchProducts() {
+  let input = document.getElementById("search").value.toLowerCase();
+  let cards = document.querySelectorAll(".product");
+  cards.forEach(card => {
+    let name = card.querySelector('h4').innerText.toLowerCase();
+    if (name.includes(input)) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+}
+filterProducts('all');
+
+// ------------------ PAYPAL (unchanged) --------
+function renderPayPalButton() {
+  let container = document.getElementById('paypal-button-container');
+  if (!container) return;
+  container.innerHTML = '';
+  let total = cart.reduce((acc, item) => acc + item.price, 0);
+  if (total === 0) {
+    container.innerHTML = '<p style="color:gray; font-size:0.85rem;">Add items to checkout via PayPal</p>';
+    return;
+  }
+  if (typeof paypal !== 'undefined') {
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: { value: total.toFixed(2) }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          alert('Payment successful! Thank you, ' + details.payer.name.given_name);
+        });
+      }
+    }).render('#paypal-button-container');
+  }
+}
+window.addEventListener('load', renderPayPalButton);
+
+// ------------------ CLOSE CART ---------------
+window.onclick = function(e) {
+  const panel = document.getElementById("cartPanel");
+  if (!panel.contains(e.target) && !e.target.classList.contains('cart')) {
+    panel.style.display = "none";
+  }
+};
+</script>
+</body>
+</html>
