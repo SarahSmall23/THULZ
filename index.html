@@ -562,7 +562,7 @@ font-size:0.95rem;
 <h3 style="font-size:1.1rem;">Delivery details</h3>
 <div class="checkout">
 <input placeholder="Full Name" id="checkoutName" value="">
-<input placeholder="Address" id="checkoutAddress" value="">
+<input placeholder="Paxi Code" id="checkoutPaxiCode" value="">
 <input placeholder="City" id="checkoutCity" value="">
 <input placeholder="Phone (important)" id="checkoutPhone" value="">
 <p style="font-weight:bold; font-size:0.95rem;">Total: R<span id="cartTotal">0.00</span></p>
@@ -641,7 +641,7 @@ function checkoutViaWhatsApp() {
   }
 
   let name = document.getElementById('checkoutName').value.trim() || "Not provided";
-  let address = document.getElementById('checkoutAddress').value.trim() || "Not provided";
+  let address = document.getElementById(PaxiCode').value.trim() || "Not provided";
   let city = document.getElementById('checkoutCity').value.trim() || "Not provided";
   let phone = document.getElementById('checkoutPhone').value.trim() || "Not provided";
 
